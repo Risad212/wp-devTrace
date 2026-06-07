@@ -22,6 +22,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/src/bootstrap.php';
 
 use DevTrace\Admin\Settings;
+use DevTrace\Database;
 
 final class WpDevTrace {
 
@@ -38,7 +39,16 @@ final class WpDevTrace {
      * @access private
      */
     private function __construct() {
+        // define constants
         $this->defineConstants();
+
+        // register plugin activation hook
+        register_activation_hook( __FILE__, [ self::class, 'activate' ] );
+
+        // uninstall plugin hook
+        register_uninstall_hook( __FILE__, [ self::class, 'uninstall' ] );
+
+        // hook run on plugins loaded
         add_action( 'plugins_loaded', [ $this, 'init' ] );
     }
 
@@ -70,12 +80,32 @@ final class WpDevTrace {
     }
 
     /**
+     * Create table when activate plugin
+     * 
+     * @return void
+     */
+    public static function activate(): void {
+      Database::createTables();
+    }
+
+    /**
+     * Delete table when uninstall plugin
+     * 
+     * @return void
+     */
+    public function uninstall(): void {
+        Database::dropTables();
+    }
+
+    /**
      * Boot plugin modules.
      *
      * @return void
      */
     public function init(): void {
-       ( new Settings() )->register();
+        if( is_admin() ){
+              ( new Settings() )->register();
+         }
     }
 }
 
