@@ -1,6 +1,21 @@
-# wp-devTrace
+# WP DevTrace
 
 A lightweight WordPress development tracing and debugging toolkit.
+
+## Features
+
+### ✅ Feature 1: Laravel-Style Error Page
+- Pretty error pages powered by `filp/whoops`
+- Replaces WordPress white screen of death
+- Shows file, line number, stack trace
+- WordPress Context panel:
+  - Current URL
+  - WordPress version
+  - Active theme name
+  - Plugin count
+- Admin only — non-admin users never see errors
+- Toggle ON/OFF from DevTrace settings page
+- Production warning notice in admin
 
 ## Installation
 
@@ -24,31 +39,22 @@ composer install
 
 ## Usage
 
-After installing dependencies:
-
-1. Copy the plugin folder into your WordPress `/wp-content/plugins/` directory.
-2. Go to the WordPress admin dashboard.
-3. Activate the plugin from **Plugins → Installed Plugins**.
-
-## Development
-
-Whenever you pull new changes from GitHub, run:
-
-```bash
-composer install
-```
-
-If dependencies change:
-
-```bash
-composer update
-```
+1. Copy plugin folder to `/wp-content/plugins/`
+2. Activate from **Plugins → Installed Plugins**
+3. Go to **DevTrace → Settings**
+4. Enable DevTrace toggle
+5. Any PHP error now shows beautiful error page
 
 ## Requirements
 
-* PHP 8.0+
-* WordPress 6.0+
-* Composer installed globally
+- PHP 8.0+
+- WordPress 6.0+
+- Composer installed globally
+
+## Important
+
+⚠️ This plugin is for **development environments only**.
+Do not activate on production sites.
 
 ## License
 
