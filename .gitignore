@@ -1,0 +1,41 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# Build files
+/dist/
+/build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Environment files
+.env
+
+# Composer
+composer.lock
+
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# WordPress
+wp-config.php
+
+# Cache
+.cache/
+
+# Generated files
+*.zip
