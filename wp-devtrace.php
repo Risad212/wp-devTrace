@@ -80,4 +80,3 @@ final class WpDevTrace {
 }
 
 WpDevTrace::getInstance();
-
