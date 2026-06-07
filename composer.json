@@ -1,0 +1,11 @@
+{
+    "name": "hmrisad/wp-devtrace",
+    "require": {
+        "filp/whoops": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "DevTrace\\": "src/"
+        }
+    }
+}
