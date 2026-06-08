@@ -10,7 +10,6 @@ use DevTrace\Modules\CrashLogger;
 /**
  * Bootstrap Whoops error handler.
  */
-
 if ( ! get_option( 'devtrace_active' ) ) {
     return;
 }

@@ -39,5 +39,20 @@ class Database {
         global $wpdb;
         $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}devtrace_errors" );
     }
+
+    /**
+     * Get distinct values from column.
+     *
+     * @param string $column
+     * @return array
+     */
+    public static function getDistinctValues( string $column ): array {
+        global $wpdb;
+
+        return $wpdb->get_col(
+            "SELECT DISTINCT {$column} FROM {$wpdb->prefix}devtrace_errors ORDER BY {$column}"
+        );
+    }
+
 }
 
