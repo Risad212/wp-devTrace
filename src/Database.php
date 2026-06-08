@@ -20,7 +20,6 @@ class Database {
             message        TEXT         NOT NULL,
             file           VARCHAR(500) NOT NULL,
             line           INT(10)      NOT NULL,
-            stack_trace    LONGTEXT     NULL,
             url            VARCHAR(500) NULL,
             active_plugins LONGTEXT     NULL,
             created_at     DATETIME     DEFAULT CURRENT_TIMESTAMP,
@@ -41,3 +40,4 @@ class Database {
         $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}devtrace_errors" );
     }
 }
+

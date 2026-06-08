@@ -1,8 +1,14 @@
 <?php
+
+use DevTrace\Modules\CrashLogger;
+
+/**
+ * Register Crashlooger store error in database
+ */
+( new CrashLogger() )->register();
+
 /**
  * Bootstrap Whoops error handler.
- * Registers before everything else loads.
- * Check Activate or not
  */
 
 if ( ! get_option( 'devtrace_active' ) ) {
@@ -28,4 +34,11 @@ $whoops->pushHandler( function( $exception, $inspector, $run ) {
 
 $whoops->pushHandler( $handler );
 $whoops->register();
+
+
+
+
+
+
+
 

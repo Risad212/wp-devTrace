@@ -5,16 +5,37 @@ namespace DevTrace\Modules;
 class CrashLogger {
 
     /**
-     * Register shutdown function.
+     * Register error handlers.
      *
      * @return void
      */
     public function register(): void {
+        set_error_handler( [ $this, 'handleError' ] );
         register_shutdown_function( [ $this, 'handleShutdown' ] );
     }
 
     /**
-     * Handle PHP shutdown.
+     * Handle all errors.
+     *
+     * @param int    $errno
+     * @param string $errstr
+     * @param string $errfile
+     * @param int    $errline
+     * @return bool
+     */
+    public function handleError( int $errno, string $errstr, string $errfile, int $errline ): bool {
+        $this->saveError( [
+            'type'    => $this->getErrorType( $errno ),
+            'message' => $errstr,
+            'file'    => $errfile,
+            'line'    => $errline,
+        ] );
+
+        return false;
+    }
+
+    /**
+     * Handle PHP shutdown for fatals.
      *
      * @return void
      */
@@ -24,6 +45,8 @@ class CrashLogger {
         if ( ! $this->isFatal( $error ) ) {
             return;
         }
+
+        $error['type'] = 'fatal';
 
         $this->saveError( $error );
     }
@@ -45,6 +68,21 @@ class CrashLogger {
     }
 
     /**
+     * Get error type string.
+     *
+     * @param int $errno
+     * @return string
+     */
+    private function getErrorType( int $errno ): string {
+        return match( $errno ) {
+            E_WARNING, E_USER_WARNING        => 'warning',
+            E_NOTICE, E_USER_NOTICE          => 'notice',
+            E_DEPRECATED, E_USER_DEPRECATED  => 'deprecated',
+            default                          => 'fatal',
+        };
+    }
+
+    /**
      * Save error to database.
      *
      * @param array $error
@@ -53,9 +91,8 @@ class CrashLogger {
     private function saveError( array $error ): void {
         global $wpdb;
 
-       $url = $_SERVER['REQUEST_URI'] ?? '';
+        $url = $_SERVER['REQUEST_URI'] ?? '';
 
-       // skip faveicon
         if ( str_contains( $url, 'favicon.ico' ) ) {
             return;
         }
@@ -63,12 +100,11 @@ class CrashLogger {
         $wpdb->insert(
             $wpdb->prefix . 'devtrace_errors',
             [
-                'type'           => 'fatal',
+                'type'           => $error['type'] ?? 'fatal',
                 'message'        => $error['message'],
                 'file'           => $error['file'],
                 'line'           => $error['line'],
-                'stack_trace'    => json_encode( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS ) ),
-                'url'            => $_SERVER['REQUEST_URI'] ?? '',
+                'url'            => $url,
                 'active_plugins' => json_encode( get_option( 'active_plugins', [] ) ),
                 'created_at'     => current_time( 'mysql' ),
             ]

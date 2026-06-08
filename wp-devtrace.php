@@ -108,15 +108,8 @@ final class WpDevTrace {
         if( is_admin() ){
               ( new Settings() )->register();
          }
-         ( new CrashLogger() )->register();
-
     }
 }
 
 WpDevTrace::getInstance();
 
-
-// trigger_error( 'Test warning message', E_USER_WARNING );
-// trigger_error( 'Test notice message', E_USER_NOTICE );
-// trigger_error( 'Test deprecated message', E_USER_DEPRECATED );
-// call_undefined_function();
