@@ -2,10 +2,12 @@
 
 namespace DevTrace\Admin;
 
+use DevTrace\Admin\ErrorLog;
+
 class Settings {
 
     /**
-     * Register admin menu.
+     * Register hooks.
      *
      * @return void
      */
@@ -13,22 +15,32 @@ class Settings {
         add_action( 'admin_menu', [ $this, 'addMenu' ] );
         add_action( 'admin_init', [ $this, 'registerSettings' ] );
         add_action( 'admin_notices', [ $this, 'productionWarning' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueueAssets' ] );
     }
 
     /**
-     * Add admin menu page.
+     * Add admin menu.
      *
      * @return void
      */
     public function addMenu(): void {
         add_menu_page(
-            'WP DevTrace',
-            'DevTrace',
+            __( 'WP DevTrace', 'wp-devtrace' ),
+            __( 'DevTrace', 'wp-devtrace' ),
             'manage_options',
             'wp-devtrace',
             [ $this, 'renderPage' ],
             'dashicons-warning',
             80
+        );
+
+        add_submenu_page(
+            'wp-devtrace',
+            __( 'Error Logs', 'wp-devtrace' ),
+            __( 'Error Logs', 'wp-devtrace' ),
+            'manage_options',
+            'wp-devtrace-errors',
+            [ new ErrorLog(), 'render' ],
         );
     }
 
@@ -52,15 +64,38 @@ class Settings {
         if ( $screen->id !== 'toplevel_page_wp-devtrace' ) {
             return;
         }
-
-        echo '<div class="notice notice-warning">
+        ?>
+        <div class="notice notice-warning">
             <p>
-                <strong>⚠ WP DevTrace Warning:</strong>
-                Please do not enable this plugin on a production site.
-                It is intended for development environments only.
-                Enabling it on production may expose sensitive error details to users.
+                <strong><?php echo esc_html__( '⚠ WP DevTrace Warning:', 'wp-devtrace' ); ?></strong>
+                <?php echo esc_html__( 'Do not enable on production site. Development use only.', 'wp-devtrace' ); ?>
             </p>
-        </div>';
+        </div>
+        <?php
+    }
+
+    /**
+     * Enqueue assets.
+     *
+     * @param string $hook
+     * @return void
+     */
+    public function enqueueAssets( string $hook ): void {
+
+        wp_enqueue_style(
+            'devtrace',
+            DEVTRACE_URL . '/assets/css/devtrace.css',
+            [],
+            DEVTRACE_VERSION
+        );
+
+        wp_enqueue_script(
+            'devtrace',
+            DEVTRACE_URL . '/assets/js/devtrace.js',
+            ['jquery'],
+            DEVTRACE_VERSION,
+            true
+        );
     }
 
     /**
@@ -72,14 +107,16 @@ class Settings {
         $isActive = get_option( 'devtrace_active', false );
         ?>
         <div class="wrap">
-            <h1>WP DevTrace Settings</h1>
+            <h1><?php echo esc_html__( 'WP DevTrace Settings', 'wp-devtrace' ); ?></h1>
 
             <form method="post" action="options.php">
                 <?php settings_fields( 'devtrace_settings' ); ?>
 
-                <table class="form-table">
+                <table class="form-table" role="presentation">
                     <tr>
-                        <th>Enable DevTrace</th>
+                        <th scope="row">
+                            <?php echo esc_html__( 'Enable DevTrace', 'wp-devtrace' ); ?>
+                        </th>
                         <td>
                             <label>
                                 <input
@@ -88,13 +125,16 @@ class Settings {
                                     value="1"
                                     <?php checked( 1, $isActive ); ?>
                                 />
-                                Enable error tracking and debugging
+                                <?php echo esc_html__( 'Enable error tracking and debugging', 'wp-devtrace' ); ?>
                             </label>
+                            <p class="description">
+                                <?php echo esc_html__( 'Only enable on development environments.', 'wp-devtrace' ); ?>
+                            </p>
                         </td>
                     </tr>
                 </table>
 
-                <?php submit_button( 'Save Settings' ); ?>
+                <?php submit_button( esc_html__( 'Save Settings', 'wp-devtrace' ) ); ?>
             </form>
         </div>
         <?php

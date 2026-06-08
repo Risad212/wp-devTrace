@@ -1,0 +1,160 @@
+/* WP DevTrace Styles */
+
+.devtrace-wrap {
+    margin: 20px 0;
+}
+
+.devtrace-title {
+    font-size: 23px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    color: #1d2327;
+}
+
+.devtrace-table-wrap {
+    overflow-x: auto;
+}
+
+.devtrace-table {
+    width: 100%;
+    min-width: 1200px;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.devtrace-table thead {
+    background: #1d2327;
+    color: #fff;
+}
+
+.devtrace-table thead th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 13px;
+    color: #fff;
+    border-right: 1px solid #3c434a;
+}
+
+.devtrace-table thead th:last-child {
+    border-right: none;
+}
+
+.devtrace-table tbody tr {
+    border-bottom: 1px solid #e0e0e0;
+    transition: background 0.2s;
+}
+
+.devtrace-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.devtrace-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.devtrace-table tbody td {
+    padding: 10px 15px;
+    font-size: 13px;
+    color: #3c434a;
+    vertical-align: middle;
+    border-right: 1px solid #e0e0e0;
+}
+
+.devtrace-table tbody td:last-child {
+    border-right: none;
+}
+
+.devtrace-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.devtrace-badge--fatal {
+    background: #fde8e8;
+    color: #c0392b;
+}
+
+.devtrace-badge--warning {
+    background: #fef3e2;
+    color: #e67e22;
+}
+
+.devtrace-badge--notice {
+    background: #e8f4fd;
+    color: #2980b9;
+}
+
+.devtrace-badge--deprecated {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.devtrace-empty {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 14px;
+}
+
+.devtrace-actions {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.devtrace-filter {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.devtrace-filter input[type="text"],
+.devtrace-filter input[type="date"],
+.devtrace-filter select {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 13px;
+}
+
+.devtrace-file {
+    font-family: monospace;
+    font-size: 12px;
+    color: #555;
+}
+
+.devtrace-message {
+    max-width: 600px;
+    overflow: hidden;
+}
+
+.devtrace-message-short {
+    display: block;
+}
+
+.devtrace-message-full {
+    display: none;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.devtrace-toggle {
+    color: #2271b1;
+    cursor: pointer;
+    font-size: 13px;
+    display: block;
+    margin-top: 4px;
+    font-weight: 500;
+}

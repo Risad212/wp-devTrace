@@ -23,6 +23,7 @@ require_once __DIR__ . '/src/bootstrap.php';
 
 use DevTrace\Admin\Settings;
 use DevTrace\Database;
+use DevTrace\Modules\CrashLogger;
 
 final class WpDevTrace {
 
@@ -95,6 +96,7 @@ final class WpDevTrace {
      */
     public function uninstall(): void {
         Database::dropTables();
+        delete_option( 'devtrace_active' );
     }
 
     /**
@@ -106,7 +108,15 @@ final class WpDevTrace {
         if( is_admin() ){
               ( new Settings() )->register();
          }
+         ( new CrashLogger() )->register();
+
     }
 }
 
 WpDevTrace::getInstance();
+
+
+// trigger_error( 'Test warning message', E_USER_WARNING );
+// trigger_error( 'Test notice message', E_USER_NOTICE );
+// trigger_error( 'Test deprecated message', E_USER_DEPRECATED );
+// call_undefined_function();
